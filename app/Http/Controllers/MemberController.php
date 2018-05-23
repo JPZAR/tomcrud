@@ -8,6 +8,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Member; //JP Notes: Need to include this so that Controller can read date from Model
+
 class MemberController extends Controller
 {
     /**
@@ -49,7 +51,13 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-        return view('members/show');
+        $data = array();
+        $member = Member::find($id); //Capital Member refers to the Model name. So this is saying: Member Model, talk to the db and find the member object with $id.
+        $data['member'] = $member; //The view (show.blade.php) file looks at the 'member' key
+        return view('members/show', $data); //JP Notes: The 2nd argument ($data) passed into the view, allows the controller to pass data to the views >> show page.
+
+        /*$member = Member::find($id);
+        return view('members.show', array('member' => $member));*///JP Notes: A better way than the above
     }
 
     /**
