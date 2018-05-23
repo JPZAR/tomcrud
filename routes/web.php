@@ -15,3 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/*
+ * The defined route below is for CRUD pages. This refers to the view page. The part in brackets {} needs to be
+ * the singular of my object. The route needs to know that we need to pass in a id via the url hence the {}.
+ */
+Route::get('members/{member}', 'MemberController@show');
