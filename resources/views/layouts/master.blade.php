@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Tom_CRUD - @yield('title')</title>
+        <title>ProPay_CRUD - @yield('title')</title>
+        <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
+        <link rel="stylesheet" href="{{asset('css/custom.css')}}">
     </head>
     <body>
-    <p>[HEADER]</p>
 
-    @yield('content')
+        @include('shared.header')
 
-    <p>[FOOTER]</p>
+        <div class="container">
+        @yield('content')
+        </div>
+
+        @include('shared.footer')
+
+        <script src="{{asset('js/jquery-3.3.1.js')}}"></script>
+        <script src="{{asset('js/bootstrap.js')}}"></script>
     </body>
 </html>

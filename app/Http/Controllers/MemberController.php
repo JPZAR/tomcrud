@@ -19,7 +19,14 @@ class MemberController extends Controller
      */
     public function index()
     {
-        //
+        $members = Member::all(); //This allows you to retrieve all of the members on the Member model, i.e. all members from the db.
+        //The object $members now contains the data. The index.blade.php file will display the object data
+        /*echo'<pre>';
+        print_r($members); //This test code shows you all question objects being retrieved from the database
+        echo'</pre>';*/
+        $data = array(); //create a data array
+        $data['member'] = $members; //Add the $members array of objects to the data array with a key of 'member'
+        return view('members/index', $data);//Now load up a view named index in the members folder and pass the data array
     }
 
     /**
