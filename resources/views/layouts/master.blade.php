@@ -10,7 +10,11 @@
         @include('shared.header')
 
         <div class="container">
-        @yield('content')
+            <p></p>
+            @include('shared.errors')
+            @include('shared.message')
+
+            @yield('content')
         </div>
 
         @include('shared.footer')

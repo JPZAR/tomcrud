@@ -17,7 +17,7 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() //This index function is used to retrieve multiple objects to 1 page
     {
         $members = Member::all(); //This allows you to retrieve all of the members on the Member model, i.e. all members from the db.
         //The object $members now contains the data. The index.blade.php file will display the object data
@@ -36,7 +36,13 @@ class MemberController extends Controller
      */
     public function create()
     {
-        //
+        //['member'] is the array key name and referenced in {!! Form::model($member,
+        // ['action' => 'MemberController@store']) !!} in the create.blade.php file. = $member is the new empty model object
+        // that was created when specifying = new Member (just below)
+        $member = new Member;
+        $data = array();
+        $data['member'] = $member;
+        return view('members.create', $data);
     }
 
     /**
@@ -45,9 +51,35 @@ class MemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request) //The $request variable will store all the form data when we submit the form
     {
-        //
+        $member = new Member; //Create new object of core object type. Now set the members data from the form data
+        $member->name = $request->name; //Set the members table columns values (through the Model : $member->name) by using the form data : $request->name.
+        $member->surname = $request->surname;
+        $member->id_number = $request->id_number;
+        $member->mobile_number = $request->mobile_number;
+        $member->email = $request->email;
+        $member->date_of_birth = $request->date_of_birth;
+
+        //create a new object (member) in the database using the save() function calling it on the model object
+        if(!$member->save()){
+            $errors = $member->getErrors();// retrieve errors. getErrors() provided by Esensi and contains all the error messages
+            /*
+             * This is test code to see what prints out
+             * echo'<pre>';
+             * print_r($errors);
+             * echo'</pre>';
+             */
+            return redirect()//redirect back to the create page and pass along the errors
+                ->action('MemberController@create')// note that the redirect syntax is a bit different than return view()
+                ->with('errors', $errors)//this is to pass the errors. 'errors' = key and $errors = error messages
+                ->withInput();
+    }
+    //successful creation
+        return redirect()
+            ->action('MemberController@index')
+            ->with('message', '<div class="alert alert-success">Member Created Successfully!</div>');
+
     }
 
     /**

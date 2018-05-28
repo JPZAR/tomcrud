@@ -18,6 +18,8 @@ Route::get('/', function () {
 Route::get('about', 'PageController@about');
 Route::get('contact', 'PageController@contact');
 
+Route::post('members/store', 'MemberController@store');
+Route::get('members/create', 'MemberController@create');
 /*
  * JP Notes: The defined route below is for CRUD pages. This refers to the view page. The part in brackets {} needs to be
  * the singular of my object. The route needs to know that we need to pass in a id via the url hence the {}.
