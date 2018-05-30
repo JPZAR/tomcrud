@@ -107,7 +107,8 @@ class MemberController extends Controller
      */
     public function edit($id)
     {
-        //
+        $member = Member::findOrFail($id);
+        return view('members.edit', ['member' => $member]);
     }
 
     /**
@@ -119,7 +120,25 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $member = Member::findOrFail($id);
+        $member->name = $request->name;
+        $member->surname = $request->surname;
+        $member->id_number = $request->id_number;
+        $member->mobile_number = $request->mobile_number;
+        $member->email = $request->email;
+        $member->date_of_birth = $request->date_of_birth;
+
+        if (!$member->save()) {
+            $errors = $member->getErrors();
+
+            return redirect()
+                ->action('MemberController@edit', $member->id)
+                ->with('errors', $member->getErrors())
+                ->withInput();
+        }
+        return redirect()
+            ->action('MemberController@index')
+            ->with('message', '<div class="alert alert-success">Member Edited Successfully!</div>');
     }
 
     /**
