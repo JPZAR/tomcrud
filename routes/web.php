@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::get('about', 'PageController@about');
 Route::get('contact', 'PageController@contact');
 
+Route::delete('members/{member}', 'MemberController@destroy');
 Route::put('members/{member}', 'MemberController@update');
 Route::get('members/{member}/edit', 'MemberController@edit');
 Route::post('members/store', 'MemberController@store');

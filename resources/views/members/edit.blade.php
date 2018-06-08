@@ -26,4 +26,8 @@
 
     {!! Form::close() !!}
 
+@include('members.partials.delete_member')
+
+<p></p>
+
 @endsection

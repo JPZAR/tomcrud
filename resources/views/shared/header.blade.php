@@ -14,8 +14,6 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="{{url('members/create')}}">Create Members</a>
                     <a class="dropdown-item" href="{{url('members')}}">View Members</a>
-                    <a class="dropdown-item" href="#">Update Members</a>
-                    <a class="dropdown-item" href="#">Delete Members</a>
                 </div>
             </li>
         </ul>

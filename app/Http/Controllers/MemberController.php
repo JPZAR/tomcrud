@@ -9,6 +9,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Member; //JP Notes: Need to include this so that Controller can read date from Model
+use App\Language;
+use App\Interest;
 
 class MemberController extends Controller
 {
@@ -42,6 +44,9 @@ class MemberController extends Controller
         $member = new Member;
         $data = array();
         $data['member'] = $member;
+        $data['languages'] = Language::pluck('name', 'id');
+        $data['interests'] = Interest::pluck('name', 'id');
+
         return view('members.create', $data);
     }
 
@@ -60,6 +65,8 @@ class MemberController extends Controller
         $member->mobile_number = $request->mobile_number;
         $member->email = $request->email;
         $member->date_of_birth = $request->date_of_birth;
+        $member->language_id = $request->language_id;
+
 
         //create a new object (member) in the database using the save() function calling it on the model object
         if(!$member->save()){
@@ -75,7 +82,8 @@ class MemberController extends Controller
                 ->with('errors', $errors)//this is to pass the errors. 'errors' = key and $errors = error messages
                 ->withInput();
     }
-    //successful creation
+        $member->interests()->sync($request->interest_id);
+        //successful creation
         return redirect()
             ->action('MemberController@index')
             ->with('message', '<div class="alert alert-success">Member Created Successfully!</div>');
@@ -108,7 +116,10 @@ class MemberController extends Controller
     public function edit($id)
     {
         $member = Member::findOrFail($id);
-        return view('members.edit', ['member' => $member]);
+        $languages = Language::pluck('name', 'id');
+        $interests = Interest::pluck('name', 'id');
+
+        return view('members.edit', ['member' => $member, 'languages' => $languages, 'interests' => $interests]);
     }
 
     /**
@@ -127,6 +138,8 @@ class MemberController extends Controller
         $member->mobile_number = $request->mobile_number;
         $member->email = $request->email;
         $member->date_of_birth = $request->date_of_birth;
+        $member->language_id = $request->language_id;
+        $member->interests()->sync($request->interest_id);
 
         if (!$member->save()) {
             $errors = $member->getErrors();
@@ -149,6 +162,11 @@ class MemberController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $member = Member::findOrFail($id); //retrieve member from db
+        $member->delete();//call delete function that is built into the model
+
+        return redirect()
+            ->action('MemberController@index')
+            ->with('message', '<div class="alert alert-info">The Member is Deleted!</div>');
     }
 }
